@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  app-provider:
+    image: rayvtoll/goapp-provider:latest
+    container_name: app-provider
+    hostname: app-provider
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vcd_frontend
+  backend:
+    image: rayvtoll/gobackend:latest
+    container_name: backend
+    hostname: backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vcd_backend
+  vacuumc:
+    image: rayvtoll/govacuumc:latest
+    container_name: vacuumc
+    hostname: vacuumc
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vcd_backend
+  login:
+    image: rayvtoll/login:latest
+    container_name: login
+    hostname: login
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3
+    networks:
+      - vcd_frontend
+      - vcd_backend
+    ports:
+      - 80:5001
+    # example ldap configuration. If you will not use LDAP please don't use section below 
+    # environment:
+    #   - USELDAP=True
+    #   - LDAPURI=ldap://contosoOpenLdap
+    #   - LDAPBIND=cn=ldap-ro,dc=contoso,dc=com
+    #   - LDAPPASSWRD=P@ss1W0Rd!
+    #   - LDAPUSERS=ou=users,dc=contoso,dc=com
+    #   - LDAPGROUPS=ou=groups,dc=contoso,dc=com
+  guacd:
+    image: guacamole/guacd:1.0.0
+    container_name: guacd
+    hostname: guacd
+    networks:
+      - vcd_frontend
+
+networks:
+  vcd_frontend:
+    external: true
+  vcd_backend:
+    external: true
