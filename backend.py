@@ -1,5 +1,5 @@
 # Using -v for the moment
-externalVolume = '/opt/vcde'
+externalVolume = '/tmp/vcde'
 
 # Other variables
 netWork = 'vcd_frontend'

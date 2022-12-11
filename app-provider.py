@@ -1,7 +1,7 @@
 import json, subprocess, os
 from flask import Flask, jsonify, request, make_response
 
-externalVolume = "/opt/vcde"
+externalVolume = "/tmp/vcde"
 netWork = 'vcd_frontend'
 
 # applications
